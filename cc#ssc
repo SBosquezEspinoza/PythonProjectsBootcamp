@@ -1,0 +1,29 @@
+[33mcommit 15f8f3ee0acfcb141efad0e248e47329962c9ae2[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Santiago Bosquez <santib831@gmail.com>
+Date:   Mon Sep 11 11:26:39 2023 +0200
+
+    Using request form from FLASK and ACTION, METHOD
+
+[33mcommit 08e31df2307537a67453d712145cbd95fbba72f0[m
+Author: Santiago Bosquez <santib831@gmail.com>
+Date:   Mon Sep 11 10:17:29 2023 +0200
+
+    two new projects Clapstone using flask and request frameworks and API
+
+[33mcommit 5423b4e7bf23abf258220ef373e6db86a46bff24[m
+Author: Santiago Bosquez <santib831@gmail.com>
+Date:   Thu Sep 7 15:47:04 2023 +0200
+
+    Some projects done with Pycharm
+
+[33mcommit 98800680cec5184555775bebc092fbfe85a9ac84[m
+Author: SBosquezEspinoza <130978063+SBosquezEspinoza@users.noreply.github.com>
+Date:   Thu Sep 7 15:45:29 2023 +0200
+
+    Update README.md
+
+[33mcommit 16930bab13dbdf049f89b8f547d4de794edfb73d[m
+Author: SBosquezEspinoza <130978063+SBosquezEspinoza@users.noreply.github.com>
+Date:   Thu Sep 7 15:44:08 2023 +0200
+
+    Initial commit
