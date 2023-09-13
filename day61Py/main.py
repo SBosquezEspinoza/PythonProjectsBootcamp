@@ -26,7 +26,7 @@ class LoginForm(FlaskForm):
 
 app = Flask(__name__)
 app.secret_key = "secret"
-bootstrap = Bootstrap5(app)
+bootstrap = Bootstrap5 (app)
 
 
 @app.route("/")
