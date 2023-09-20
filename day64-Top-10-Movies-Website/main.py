@@ -29,7 +29,8 @@ db = SQLAlchemy()
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///top-10-movies-collection.db"
 # initialize the app with the extension
 db.init_app(app)
-
+#API for movies## your api key
+MOVIE_DB_API_KEY = "Your secret API"
 
 class AddMovie(FlaskForm):
     title = StringField('Movie Title', validators=[DataRequired()])
@@ -47,9 +48,9 @@ class Movie(db.Model):
     title = db.Column(db.String(250), unique=True, nullable=False)
     year = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(250), nullable=False)
-    rating = db.Column(db.Float, nullable=False)
-    ranking = db.Column(db.Integer, nullable=False)
-    review = db.Column(db.String(250), nullable=False)
+    rating = db.Column(db.Float, nullable=True)
+    ranking = db.Column(db.Integer, nullable=True)
+    review = db.Column(db.String(250), nullable=True)
     img_url = db.Column(db.String(250), nullable=False)
 
 
@@ -59,8 +60,11 @@ with app.app_context():
 
 @app.route("/")
 def home():
-    result = db.session.execute(db.select(Movie))
-    all_movies = result.scalars()
+    result = db.session.execute(db.select(Movie).order_by(Movie.rating))
+    all_movies = result.scalars().all()
+    for i in range(len(all_movies)):
+        all_movies[i].ranking = len(all_movies) - i
+    db.session.commit()
     return render_template('index.html', movies=all_movies)
 
 
@@ -97,7 +101,35 @@ def delete(movie_id):
 @app.route("/add", methods=["POST", "GET"])
 def add():
     form = AddMovie()
+
+    if form.validate_on_submit():
+        title_movie = form.title.data
+        # URL = f"https://api.themoviedb.org/3/search/movie?query={title_movie}&include_adult=false&language=en-US&page=1"
+        # headers = {
+        #     "accept": "application/json",
+        #     "Authorization": "login in account to get it"
+        # }
+        #movies = requests.get(URL, headers=headers).json()["results"]
+        MOVIE_DB_SEARCH_URL = "https://api.themoviedb.org/3/search/movie"
+        movies = requests.get(MOVIE_DB_SEARCH_URL, params={"api_key": MOVIE_DB_API_KEY, "query": title_movie}).json()["results"]
+        return render_template("select.html", movies=movies)
+
     return render_template('add.html', form=form)
+
+@app.route('/find/<int:movie_id>')
+def find(movie_id):
+    MOVIE_DB_IMAGE_URL = "https://image.tmdb.org/t/p/w500"
+    URL = f"https://api.themoviedb.org/3/movie/{movie_id}"
+    response = requests.get(URL, params={"api_key": MOVIE_DB_API_KEY}).json()
+    print(response)
+    new_movie = Movie(title=response["title"],
+                      img_url=f"{MOVIE_DB_IMAGE_URL}/{response['poster_path']}",
+                      year=response['release_date'].split('-')[0],
+                      description=response['overview'])
+    db.session.add(new_movie)
+    db.session.commit()
+    movie = db.session.execute(db.select(Movie).where(Movie.title == response['title'])).scalar()
+    return redirect(url_for('edit', movie_id=movie.id))
 
 
 if __name__ == '__main__':
