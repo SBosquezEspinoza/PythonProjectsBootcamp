@@ -78,7 +78,7 @@ class BlogPost(db.Model):
     img_url = db.Column(db.String(250), nullable=False)
     ## RELATIONSHIP BETWEEN DB ## CHILD TABLE
     # Create Foreign Key, "users.id" the users refers to the tablename of User.
-    author_id = db.Column(db.Integer, db.ForeignKey("all_users.id"))
+    author_id = db.Column(db.Integer, db.ForeignKey("all_users.id"))##para relacion con author user
     # Create reference to the User object, the "posts" refers to the posts protperty in the User class.
     author = relationship("User", back_populates="posts")
     comments = relationship("Comment", back_populates="parent_post")
